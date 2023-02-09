@@ -1,1 +1,1 @@
-task shell basics
+0x01. Shell, permissions
