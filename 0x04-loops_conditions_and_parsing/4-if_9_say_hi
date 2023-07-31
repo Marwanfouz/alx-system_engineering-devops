@@ -1,2 +1,11 @@
-#!/bin/bash
-# Bash script that displays Best School 10 times
+#!/usr/bin/env bash
+#  Bash script that displays Best School 10 times, but for the 9th iteration,then Hi on a new line
+
+counter=1
+while [ $counter -lt 11 ]; do
+    echo "Best School"
+    if [ $counter -eq 9 ]; then
+        echo "Hi"
+    fi
+    ((counter++))
+done
