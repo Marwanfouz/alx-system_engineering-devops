@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# 4 bad luck, 8 is your chance
+
+counter=1
+while [ $counter -le 100 ]; do
+    if ! (( counter % 3 )) && ! (( counter % 5 )); then
+        echo "FizzBuzz"
+    elif ! (( counter % 3 )); then
+        echo "Fizz"
+    elif ! (( counter % 5 )); then
+        echo "Buzz"
+    else
+        echo "$counter"
+    fi
+    
+    ((counter++))
+done
