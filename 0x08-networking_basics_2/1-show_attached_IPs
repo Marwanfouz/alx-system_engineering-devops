@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# changes the following domain resolve ips
+#   localhost from 127.0.0.1 to 127.0.0.2
+#   facebook.com from 157.240.11.35 to 8.8.8.8
+
+ip -4 -o addr show | awk '{print $4}' | cut -d "/" -f 1
