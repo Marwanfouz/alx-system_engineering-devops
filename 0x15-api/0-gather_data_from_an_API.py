@@ -1,34 +1,35 @@
 #!/usr/bin/python3
-"""Returns to-do list information for a given employee ID."""
+"""gather data from API"""
 
-import json
 import requests
 from sys import argv
 
-
 if __name__ == "__main__":
+    try:
+        user_ID = int(argv[1])
+    except Exception as a:
+        exit()
 
-    sessionReq = requests.Session()
+    URL = 'https://jsonplaceholder.typicode.com'
+    # get employee name
+    employee_data = requests.get(f'{URL}/users/{user_ID}').json()
+    if employee_data == {}:
+        exit()
+    emp_name = employee_data.get('name')
 
-    idEmp = argv[1]
-    idURL = 'https://jsonplaceholder.typicode.com/users/{}/todos'.format(idEmp)
-    nameURL = 'https://jsonplaceholder.typicode.com/users/{}'.format(idEmp)
+    # get all Tasks for all employees
+    tasks_list = requests.get(f'{URL}/todos').json()
 
-    employee = sessionReq.get(idURL)
-    employeeName = sessionReq.get(nameURL)
+    n_tasks = 0
+    n_done_tasks = 0
+    todo_tasks_list = []
+    for task in tasks_list:
+        if task.get('userId') == user_ID:
+            n_tasks += 1
+            if task.get('completed'):
+                n_done_tasks += 1
+                todo_tasks_list.append(task.get('title'))
 
-    json_req = employee.json()
-    name = employeeName.json()['name']
-
-    totalTasks = 0
-
-    for done_tasks in json_req:
-        if done_tasks['completed']:
-            totalTasks += 1
-
-    print("Employee {} is done with tasks({}/{}):".
-          format(name, totalTasks, len(json_req)))
-
-    for done_tasks in json_req:
-        if done_tasks['completed']:
-            print("\t " + done_tasks.get('title'))
+    print(f"Employee {emp_name} is done with tasks({n_done_tasks}/{n_tasks}):")
+    for task in todo_tasks_list:
+        print(f"\t {task}")
